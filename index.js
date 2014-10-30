@@ -1,4 +1,3 @@
-var debug = require('debug')('serverbone:acl');
 var _ = require('lodash');
 
 /**
@@ -77,7 +76,6 @@ var Permissions = {
 exports.ACL = function (permissions) {
   // Permissions map roles to array of actions: {"user":["read"],"admin":["write"]}
   this.permissions = _.extend({}, Permissions, permissions);
- // debug('new ACL: %s', JSON.stringify(this.permissions));
 };
 
 
@@ -140,10 +138,8 @@ _.extend(exports.ACL.prototype, {
       roles = [roles];
     }
     roles.push('*');
-    //debug('asseting %s to perform %s against %s', roles.join(','), action, JSON.stringify(this.permissions));
     var matches = _.filter(roles, function (role) {
       var actions = self.permissions[role] || self.permissions['*'];
-      //debug('Asserting %s -> %s agains %s: %s', role, action, JSON.stringify(actions),
       return actions.indexOf(action) !== -1 || actions.indexOf('*') !== -1;
     });
     return matches.length > 0;
@@ -173,7 +169,6 @@ exports.type = function (type) {
  */
 exports.attribute = function (attr, value) {
   return function (model, actor) {
-    debug('Asserting actor.get(%s) -> %s == %s', attr, actor.get(attr), value);
     return actor.has(attr) && actor.get(attr) === value;
   };
 };
@@ -188,8 +183,6 @@ exports.attribute = function (attr, value) {
  */
 exports.property = function (key, actorKey) {
   return function (model, actor) {
-    debug('Asserting model.get(%s) against actor.get(%s) -> %s == %s', key, actorKey,
-      model.get(key), actor.get(actorKey));
     return actor.has(actorKey) && model.has(key) && model.get(key) === actor.get(actorKey);
   };
 };
