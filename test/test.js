@@ -4,7 +4,7 @@ var ACL = require('..').ACL;
 describe('Access Roles', function () {
   var acl;
 
-  before(function () {
+  beforeEach(function () {
     acl = new ACL({
       'owner': ['write', 'read', 'update'],
       '*': ['read']
@@ -58,5 +58,11 @@ describe('Access Roles', function () {
     });
     acl.assert('anyone', 'abolish').should.equal(true);
     acl.assert('anyone', 'destroye').should.equal(false);
+  });
+
+  it('should get a list of allowed actions', function() {
+    acl.allowedActions('*').should.eql(['read']);
+    acl.allowedActions(['admin', '*']).should.eql(['*', 'read']);
+    acl.allowedActions(['owner']).should.eql(['write', 'read', 'update']);
   });
 });

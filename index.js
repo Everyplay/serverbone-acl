@@ -143,6 +143,24 @@ _.extend(exports.ACL.prototype, {
       return actions.indexOf(action) !== -1 || actions.indexOf('*') !== -1;
     });
     return matches.length > 0;
+  },
+
+  /**
+   * Returns a list of actions given role(s) have access to
+   * @param  {String|Array} roles
+   * @return {Array} list of actions
+   */
+  allowedActions: function(roles) {
+    roles = roles || ['*'];
+    if (!Array.isArray(roles)) {
+      roles = [roles];
+    }
+    if (roles.indexOf('*') === -1) roles.push('*');
+    var actions = [];
+    _.each(roles, function(role) {
+      actions = actions.concat(this.permissions[role]);
+    }, this);
+    return _.uniq(actions);
   }
 });
 
