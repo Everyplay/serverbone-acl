@@ -1,6 +1,6 @@
 {
   "name": "serverbone-acl",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple role based access control for Serverbone",
   "main": "index.js",
   "scripts": {
