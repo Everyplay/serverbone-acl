@@ -64,5 +64,6 @@ describe('Access Roles', function () {
     acl.allowedActions('*').should.eql(['read']);
     acl.allowedActions(['admin', '*']).should.eql(['*', 'read']);
     acl.allowedActions(['owner']).should.eql(['write', 'read', 'update']);
+    acl.allowedActions(['admin', 'foo']).should.eql(['*', 'read']);
   });
 });

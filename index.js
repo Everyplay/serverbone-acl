@@ -158,7 +158,9 @@ _.extend(exports.ACL.prototype, {
     if (roles.indexOf('*') === -1) roles.push('*');
     var actions = [];
     _.each(roles, function(role) {
-      actions = actions.concat(this.permissions[role]);
+      if (_.has(this.permissions, role)) {
+        actions = actions.concat(this.permissions[role]);
+      }
     }, this);
     return _.uniq(actions);
   }
